@@ -50,15 +50,13 @@ class ValidateBooking(FormValidationAction):
             return [SlotSet("requested_slot", "room_type")]
 
         filters = []
-        response = ConditionalSlotting(form_slots).get_next_requested_slot(
+        return ConditionalSlotting(form_slots).get_next_requested_slot(
             current_slots=current_slots,
             filters=filters,
             table = table,
             current_intent=current_intent,
             length_of_forms=len(form_slots)
         )
-
-        return response
 
 
 class ActionBookRoom(Action):
@@ -162,10 +160,9 @@ class ConditionalSlotting(object):
                     continue
                 if room_type == 'recreation' and key in ['floor_num']:
                     continue
-                else:
-                    request_next_slot = key
-                    return [SlotSet("requested_slot", request_next_slot)
-                            ]
+                request_next_slot = key
+                return [SlotSet("requested_slot", request_next_slot)
+                        ]
 
         return [SlotSet("requested_slot", None)]
 
